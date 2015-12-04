@@ -1,0 +1,5 @@
+2015/12/03 23:16:02 [notice] 26920#27260: signal process started
+2015/12/03 23:17:05 [notice] 6760#25108: signal process started
+2015/12/03 23:17:55 [error] 27096#22908: *8 CreateFile() "C:\Users\Paul\Downloads\nginx-1.9.7/data/www/favicon.ico" failed (2: The system cannot find the file specified), client: 192.168.0.203, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "192.168.0.203:9000", referrer: "http://192.168.0.203:9000/"
+2015/12/03 23:18:10 [error] 27096#22908: *9 CreateFile() "C:\Users\Paul\Downloads\nginx-1.9.7/data/www/favicon.ico" failed (2: The system cannot find the file specified), client: 82.139.125.134, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "82.139.125.134:9000", referrer: "http://82.139.125.134:9000/"
+2015/12/03 23:18:55 [notice] 26004#6252: signal process started
