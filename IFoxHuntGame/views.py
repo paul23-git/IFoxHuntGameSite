@@ -29,23 +29,10 @@ def index(request):
         r = HttpResponse("E:Incorrect Pass-Name combination")
         r.status_code = 403;
         return r;
-    if request.method == "GET":
-        all_others = Group.objects.exclude(hunter=mygroup.hunter)
-        #others_str = ';'.join([p.send_data() for p in all_others])
-        target = min((haversine(mygroup.longitude,mygroup.latitude, o.longitude, o.latitude),o)
-                     for o in all_others)
-        others_str = target[1].send_data()
-        if mygroup.hunter:
-            exclude = 2
-        else:
-            exclude = 1
-        all_powerups = PowerUp.objects.exclude(who=exclude)
-        powerups_str = ';'.join([repr(p) for p in all_powerups])
-        return HttpResponse(others_str + '\n' + powerups_str)
-    else:
+    found_powerup = "";
+    if request.method == "POST":
         try:
             position = d["pos"]
-            print(position)
             l = position.split(",")
             mygroup.longitude = float(l[0])
             mygroup.latitude = float(l[1])
@@ -57,13 +44,21 @@ def index(request):
                 exclude = 1
             all_powerups = PowerUp.objects.exclude(who=exclude)
             all_picked_powerups = [p for p in all_powerups if haversine(mygroup.longitude, mygroup.latitude, p.longitude, p.latitude) < 10]
-            print("PU")
             if len(all_picked_powerups) > 0:
-                picked_powerup = all_picked_powerups[0];
-                return HttpResponse(picked_powerup)
-            else:
-                return HttpResponse("")
+                found_powerup = all_picked_powerups[0];
         except:
             r =  HttpResponse("Bad format")
             r.status_code = 400;
             return r;
+    all_others = Group.objects.exclude(hunter=mygroup.hunter)
+
+    target = min((haversine(mygroup.longitude,mygroup.latitude, o.longitude, o.latitude),o)
+                 for o in all_others)
+    others_str = target[1].send_data()
+    if mygroup.hunter:
+        exclude = 2
+    else:
+        exclude = 1
+    all_powerups = PowerUp.objects.exclude(who=exclude)
+    powerups_str = ';'.join([repr(p) for p in all_powerups])
+    return HttpResponse(others_str + '\n' + found_powerup + '\n' + powerups_str + '\n' + '\0')
