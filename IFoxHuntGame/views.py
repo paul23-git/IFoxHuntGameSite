@@ -52,9 +52,13 @@ def index(request):
             return r;
     all_others = Group.objects.exclude(hunter=mygroup.hunter)
 
-    target = min((haversine(mygroup.longitude,mygroup.latitude, o.longitude, o.latitude),o)
-                 for o in all_others)
-    others_str = target[1].send_data()
+    try:
+        target = min((haversine(mygroup.longitude,mygroup.latitude, o.longitude, o.latitude),o)
+                     for o in all_others)
+        others_str = target[1].send_data()
+    except ValueError:
+        others_str = "";
+    #powerups_str = "";
     if mygroup.hunter:
         exclude = 2
     else:
