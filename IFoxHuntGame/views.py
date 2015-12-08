@@ -46,10 +46,8 @@ def index(request):
             all_picked_powerups = [p for p in all_powerups if haversine(mygroup.longitude, mygroup.latitude, p.longitude, p.latitude) < 10]
             if len(all_picked_powerups) > 0:
                 found_powerup = all_picked_powerups[0];
-        except:
-            r =  HttpResponse("Bad format")
-            r.status_code = 400;
-            return r;
+        except (KeyError, IndexError):
+            pass
     all_others = Group.objects.exclude(hunter=mygroup.hunter)
 
     try:
