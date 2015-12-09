@@ -38,14 +38,6 @@ def index(request):
             mygroup.latitude = float(l[1])
             mygroup.altitude = float(l[2])
             mygroup.save()
-            if mygroup.hunter:
-                exclude = 2
-            else:
-                exclude = 1
-            all_powerups = PowerUp.objects.exclude(who=exclude)
-            all_picked_powerups = [p for p in all_powerups if haversine(mygroup.longitude, mygroup.latitude, p.longitude, p.latitude) < 10]
-            if len(all_picked_powerups) > 0:
-                found_powerup = all_picked_powerups[0];
         except (KeyError, IndexError):
             pass
     all_others = Group.objects.exclude(hunter=mygroup.hunter)
@@ -61,6 +53,11 @@ def index(request):
         exclude = 2
     else:
         exclude = 1
-    all_powerups = PowerUp.objects.exclude(who=exclude)
+    all_powerups = PowerUp.objects.exclude(who=exclude, taken=True)
     powerups_str = ';'.join([repr(p) for p in all_powerups])
+    all_picked_powerups = [p for p in all_powerups if haversine(mygroup.longitude, mygroup.latitude, p.longitude, p.latitude) < 10]
+    if len(all_picked_powerups) > 0:
+        found_powerup = all_picked_powerups[0]
+        found_powerup.taken = True;
+        found_powerup.save()
     return HttpResponse(others_str + '\n' + found_powerup + '\n' + powerups_str + '\n' + '\0')

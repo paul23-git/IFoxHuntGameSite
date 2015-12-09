@@ -38,12 +38,11 @@ class PowerUp(models.Model):
     longitude = models.FloatField(default=0)
     latitude = models.FloatField(default=0)
     altitude = models.FloatField(default=0)
-    PU_time = models.TimeField();
-    who = models.IntegerField(default=0);
+    who = models.IntegerField(default=0)
+    taken = models.IntegerField(default=0)
     def __repr__(self):
         return str(self.PU_id)+ ","\
                + str(self.longitude) + "," \
                + str(self.latitude) + "," \
                + str(self.altitude) + "," \
-               + str(self.PU_time) + ","\
                + str(self.who)
