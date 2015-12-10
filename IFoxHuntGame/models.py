@@ -40,10 +40,12 @@ class PowerUp(models.Model):
     altitude = models.FloatField(default=0)
     who = models.IntegerField(default=0)
     taken = models.IntegerField(default=0)
+    message = models.TextField(default="Congrats you got a powerup!")
     def __repr__(self):
         return str(self.id) + "," \
                + str(self.longitude) + "," \
                + str(self.latitude) + "," \
                + str(self.altitude) + "," \
                + str(self.PU_id)+ ","\
-               + str(self.who)
+               + str(self.who)+"," \
+               + str(self.message)
