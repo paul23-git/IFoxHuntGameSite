@@ -41,8 +41,9 @@ class PowerUp(models.Model):
     who = models.IntegerField(default=0)
     taken = models.IntegerField(default=0)
     def __repr__(self):
-        return str(self.PU_id)+ ","\
+        return str(self.id) + "," \
                + str(self.longitude) + "," \
                + str(self.latitude) + "," \
                + str(self.altitude) + "," \
+               + str(self.PU_id)+ ","\
                + str(self.who)
