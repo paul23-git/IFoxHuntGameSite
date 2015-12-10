@@ -53,7 +53,8 @@ def index(request):
         exclude = 2
     else:
         exclude = 1
-    all_powerups = PowerUp.objects.exclude(who=exclude, taken=True)
+    all_powerups = PowerUp.objects.exclude(who=exclude)
+    all_powerups.exclude(taken=True)
     powerups_str = ';'.join([repr(p) for p in all_powerups])
     all_picked_powerups = [p for p in all_powerups if haversine(mygroup.longitude, mygroup.latitude, p.longitude, p.latitude) < 10]
     if len(all_picked_powerups) > 0:
