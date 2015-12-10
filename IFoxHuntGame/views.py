@@ -60,4 +60,4 @@ def index(request):
         found_powerup = all_picked_powerups[0]
         found_powerup.taken = True;
         found_powerup.save()
-    return HttpResponse(others_str + '\n' + found_powerup + '\n' + powerups_str + '\n' + '\0')
+    return HttpResponse(others_str + '\n' + repr(found_powerup) + '\n' + powerups_str + '\n' + '\0')
