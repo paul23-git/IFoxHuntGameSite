@@ -79,10 +79,10 @@ def index(request):
             if ret[0]:
                 found_powerup_msg += " " + ret[1]
                 mygroup.save();
-
-
-            found_powerup.taken = True;
-            found_powerup.save()
         except (ValueError, TypeError, IndexError):
             pass
-    return HttpResponse(others_str + '\n' + found_powerup_msg  + '\n' + powerups_str + '\n' + '\0')
+        finally:
+            found_powerup.taken = True;
+            found_powerup.save()
+
+    return HttpResponse(others_str + '\r\n' + found_powerup_msg  + '\r\n' + powerups_str + '\r\n' + '\0')
