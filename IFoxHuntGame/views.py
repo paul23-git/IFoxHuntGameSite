@@ -89,7 +89,7 @@ def index(request):
         try:
             target = min((haversine(mygroup.longitude,mygroup.latitude, o.longitude, o.latitude),o)
                          for o in all_others)
-            others_str = target[0].send_data(mygroup.accuracy_mod)
+            others_str = target[1].send_data(mygroup.accuracy_mod)
         except ValueError:
             pass
     return HttpResponse(others_str + '\r\n' + found_powerup_msg  + '\r\n' + powerups_str + '\r\n' + '\0')
