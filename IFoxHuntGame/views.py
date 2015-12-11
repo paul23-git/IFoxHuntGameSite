@@ -83,6 +83,6 @@ def index(request):
 
             found_powerup.taken = True;
             found_powerup.save()
-        except ValueError | IndexError:
-            raise
+        except (ValueError, TypeError, IndexError):
+            pass
     return HttpResponse(others_str + '\n' + found_powerup_msg  + '\n' + powerups_str + '\n' + '\0')

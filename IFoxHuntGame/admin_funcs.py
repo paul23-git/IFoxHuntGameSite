@@ -39,6 +39,6 @@ def doAdministration(d: dict, caller: Group):
             ret = PO.performUpgrade(group=g)
             if ret != "":
                 g.save()
-        except KeyError:
+        except (KeyError, AttributeError):
             pass
 
