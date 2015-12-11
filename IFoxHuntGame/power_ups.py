@@ -41,7 +41,7 @@ class ActivateArrow(PowerUps):
 
 
 
-names = [PowerUps.get_name(), AccuracyPowerUp.get_name(), VisibilityPowerUp.get_name()]
+names = [PowerUps.get_name(), AccuracyPowerUp.get_name(), VisibilityPowerUp.get_name(), ActivateArrow.get_name()]
 id_to_name_map =dict(p for p in enumerate(names))
 
 def powerup_get_name( id) -> str:
