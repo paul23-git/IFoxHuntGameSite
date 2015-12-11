@@ -30,10 +30,19 @@ class VisibilityPowerUp(PowerUps):
     def performUpgrade(self, group, *args, **kwargs) -> Tuple[bool,str]:
         group.visibility = datetime.datetime.now() + datetime.timedelta(minutes=5)
         return (True, "You hide your movement for 5 minutes")
+class ActivateArrow(PowerUps):
+    def performUpgrade(self, group, *args, **kwargs) -> Tuple[bool,str]:
+        if not group.has_targetting:
+            group.has_targetting = True;
+            return (True, "-- Game started!")
+        else:
+            return (False, "")
 
 
 
 
+names = [PowerUps.get_name(), AccuracyPowerUp.get_name(), VisibilityPowerUp.get_name()]
+id_to_name_map =dict(p for p in enumerate(names))
 
 def powerup_get_name( id) -> str:
     return names[id]
@@ -44,5 +53,3 @@ def powerup_name_to_class(str) -> PowerUps:
 
 
 
-names = [PowerUps.get_name(), AccuracyPowerUp.get_name(), VisibilityPowerUp.get_name()]
-id_to_name_map =dict(p for p in enumerate(names))

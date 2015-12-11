@@ -28,12 +28,14 @@ class Group(models.Model):
     conceal_mod = models.FloatField(default=1)
     visibility = models.DateTimeField(default=datetime(2015,12,11))
     distance_show = models.DateTimeField(default=datetime(2015,12,11))
-
+    is_active = models.BooleanField(default = True )
+    has_targetting = models.BooleanField(default = False)
     def reset_powerups(self):
         self.accuracy_mod = 1;
         self.conceal_mod = 1;
         self.distance_show=datetime(2015,12,11);
         self.visibility=datetime(2015,12,11);
+        self.has_targetting = False;
 
     def __repr__(self):
         return str(self.name)+ ","\
@@ -59,6 +61,8 @@ class PowerUp(models.Model):
     who = models.IntegerField(default=0)
     taken = models.IntegerField(default=0)
     message = models.TextField(default="Congrats you got a powerup!")
+    database_string = models.TextField(default="", blank=True)
+    specific_group = models.TextField(default="")
     def __repr__(self):
         return str(self.id) + "," \
                + str(self.longitude) + "," \

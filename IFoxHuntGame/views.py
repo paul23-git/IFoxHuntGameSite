@@ -9,6 +9,7 @@ from .game_funcs import *
 from .admin_funcs import *
 from django.template.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.db.models import Q
 
 
 @csrf_exempt
@@ -52,37 +53,43 @@ def index(request):
             mygroup.save()
         except (KeyError, IndexError):
             pass
-    all_others = Group.objects.exclude(hunter=mygroup.hunter).filter(visibility__lt=datetime.datetime.now())
-
-    try:
-        target = min((haversine(mygroup.longitude,mygroup.latitude, o.longitude, o.latitude),o)
-                     for o in all_others)
-        others_str = target[1].send_data(mygroup.accuracy_mod)
-    except ValueError:
-        others_str = ""
+    others_str = ""
+    if mygroup.has_targetting:
+        all_others = Group.objects.exclude(hunter=mygroup.hunter).filter(visibility__lt=datetime.datetime.now()).filter(is_active=True)
+        try:
+            target = min((haversine(mygroup.longitude,mygroup.latitude, o.longitude, o.latitude),o)
+                         for o in all_others)
+            others_str = target[1].send_data(mygroup.accuracy_mod)
+        except ValueError:
+            pass
     if mygroup.hunter:
         exclude = 2
     else:
         exclude = 1
-    all_powerups = PowerUp.objects.exclude(who=exclude).exclude(taken=True)
+
+    all_powerups = PowerUp.objects.exclude(who=exclude).exclude(taken=True).filter(Q(specific_group="") | Q(specific_group=mygroup.name))
     powerups_str = ';'.join([repr(p) for p in all_powerups])
 
     all_picked_powerups = [p for p in all_powerups if haversine(mygroup.longitude, mygroup.latitude, p.longitude, p.latitude) < 20]
     found_powerup_msg = ""
     if len(all_picked_powerups) > 0:
         found_powerup = all_picked_powerups[0]
+        dodelete = True;
+        found_powerup_msg = found_powerup.message
         try:
-            found_powerup_msg = found_powerup.message
             PO_name = powerup_get_name(int(found_powerup.PU_id))
             PO = powerup_name_to_class(PO_name)()
             ret = PO.performUpgrade(mygroup)
             if ret[0]:
                 found_powerup_msg += " " + ret[1]
                 mygroup.save();
+            else:
+                dodelete = False
         except (ValueError, TypeError, IndexError):
             pass
         finally:
-            found_powerup.taken = True;
-            found_powerup.save()
+            if dodelete:
+                found_powerup.taken = True;
+                found_powerup.save()
 
     return HttpResponse(others_str + '\r\n' + found_powerup_msg  + '\r\n' + powerups_str + '\r\n' + '\0')
