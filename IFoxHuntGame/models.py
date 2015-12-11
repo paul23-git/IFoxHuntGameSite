@@ -1,4 +1,9 @@
 from django.db import models
+from datetime import time
+from datetime import datetime
+import random
+import IFoxHuntGame.game_funcs as game_funcs
+import math
 
 # Create your models here.
 
@@ -19,6 +24,17 @@ class Group(models.Model):
     latitude = models.FloatField(default=0)
     altitude = models.FloatField(default=0)
     hunter = models.BooleanField(default=True)
+    accuracy_mod = models.FloatField(default=1)
+    conceal_mod = models.FloatField(default=1)
+    visibility = models.DateTimeField(default=datetime(2015,12,11))
+    distance_show = models.DateTimeField(default=datetime(2015,12,11))
+
+    def reset_powerups(self):
+        self.accuracy_mod = 1;
+        self.conceal_mod = 1;
+        self.distance_show=datetime(2015,12,11);
+        self.visibility=datetime(2015,12,11);
+
     def __repr__(self):
         return str(self.name)+ ","\
                + str(self.password) + "," \
@@ -26,10 +42,12 @@ class Group(models.Model):
                + str(self.latitude) + "," \
                + str(self.altitude) + "," \
                + str(self.hunter)
-    def send_data(self):
+    def send_data(self, group_accuracy):
+        dis = game_funcs.BASE_INACCURACY / group_accuracy * self.conceal_mod
+        longitude, latitude = game_funcs.offsetCoordinates(self.longitude, self.latitude, random.random() * dis, 2 *math.pi* random.random())
         return str(self.name)+ ","\
-               + str(self.longitude) + "," \
-               + str(self.latitude) + "," \
+               + str(longitude) + "," \
+               + str(latitude) + "," \
                + str(self.altitude) + "," \
                + str(self.hunter)
 
