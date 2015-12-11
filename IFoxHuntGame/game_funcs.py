@@ -5,7 +5,7 @@ ID_TO_STR = {
     1 : ""
 }
 EARTH_RADIUS = 6371000
-BASE_INACCURACY = 500
+BASE_INACCURACY = 250
 ADMIN_GROUP = "Paul"
 def haversine(lon1, lat1, lon2, lat2):
     """

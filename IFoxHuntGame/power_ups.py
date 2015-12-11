@@ -20,10 +20,10 @@ class PowerUps:
 class AccuracyPowerUp(PowerUps):
     def performUpgrade(self, group, *args, **kwargs) -> Tuple[bool,str]:
         if group.hunter:
-            group.accuracy_mod /= 1.5
+            group.accuracy_mod /= 2
             return (True,"Your GPS is now twice as good")
         else:
-            group.conceal_mod *= 1.5
+            group.conceal_mod *= 2
             return (True,"You scramble the hunter's gps")
         return (False,"");
 class VisibilityPowerUp(PowerUps):
