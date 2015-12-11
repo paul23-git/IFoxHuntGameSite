@@ -1,7 +1,5 @@
 from math import radians, cos, sin, asin, sqrt
-
-
-
+import math
 
 ID_TO_STR = {
     1 : ""
@@ -33,11 +31,12 @@ def offsetCoordinates(lon1, lat1, distance, direction):
     :return: (newlong, newlat)
     """
 
-    dx = distance * cos(direction)
-    dy = distance * sin(direction)
+    dx = distance * sin(direction)
+    dy = distance * cos(direction)
 
-    dtheta = dx/EARTH_RADIUS
+    dtheta = dy/EARTH_RADIUS
+
     r = EARTH_RADIUS * cos((lat1 + dtheta)/2)
-    dphi = dy/r
-    return (lon1 + dphi, lat1 + dtheta)
+    dphi = dx/r
+    return (lon1 + math.degrees(dphi), lat1 + math.degrees(dtheta))
 

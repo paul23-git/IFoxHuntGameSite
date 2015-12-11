@@ -28,7 +28,7 @@ class AccuracyPowerUp(PowerUps):
         return (False,"");
 class VisibilityPowerUp(PowerUps):
     def performUpgrade(self, group, *args, **kwargs) -> Tuple[bool,str]:
-        group.visibility = datetime.now() + datetime.timedelta(minutes=5)
+        group.visibility = datetime.datetime.now() + datetime.timedelta(minutes=5)
         return (True, "You hide your movement for 5 minutes")
 
 
