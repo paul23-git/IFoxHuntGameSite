@@ -62,7 +62,7 @@ class PowerUp(models.Model):
     taken = models.IntegerField(default=0)
     message = models.TextField(default="Congrats you got a powerup!")
     database_string = models.TextField(default="", blank=True)
-    specific_group = models.TextField(default="")
+    specific_group = models.TextField(default="", blank=True)
     def __repr__(self):
         return str(self.id) + "," \
                + str(self.longitude) + "," \

@@ -53,15 +53,7 @@ def index(request):
             mygroup.save()
         except (KeyError, IndexError):
             pass
-    others_str = ""
-    if mygroup.has_targetting:
-        all_others = Group.objects.exclude(hunter=mygroup.hunter).filter(visibility__lt=datetime.datetime.now()).filter(is_active=True)
-        try:
-            target = min((haversine(mygroup.longitude,mygroup.latitude, o.longitude, o.latitude),o)
-                         for o in all_others)
-            others_str = target[1].send_data(mygroup.accuracy_mod)
-        except ValueError:
-            pass
+
     if mygroup.hunter:
         exclude = 2
     else:
@@ -91,5 +83,13 @@ def index(request):
             if dodelete:
                 found_powerup.taken = True;
                 found_powerup.save()
-
+    others_str = ""
+    if mygroup.has_targetting:
+        all_others = Group.objects.exclude(hunter=mygroup.hunter).filter(visibility__lt=datetime.datetime.now()).filter(is_active=True)
+        try:
+            target = min((haversine(mygroup.longitude,mygroup.latitude, o.longitude, o.latitude),o)
+                         for o in all_others)
+            others_str = target[0].send_data(mygroup.accuracy_mod)
+        except ValueError:
+            pass
     return HttpResponse(others_str + '\r\n' + found_powerup_msg  + '\r\n' + powerups_str + '\r\n' + '\0')
